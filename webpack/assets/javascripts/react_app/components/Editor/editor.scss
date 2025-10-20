@@ -1,3 +1,7 @@
+.nav-tabs-pf > li:first-child > a {
+  padding-left: 15px;
+}
+
 .ace_content {
   font-family: monospace !important;
 }
@@ -65,7 +69,7 @@
   height: 40px;
   min-height: unset !important;
 
-  .nav-tabs-pf-secondary {
+  .nav-tabs-pf5-secondary {
     float: left;
     background: unset !important;
     border-bottom: unset;
@@ -242,43 +246,20 @@
   }
 }
 
-#preview_error_toast {
-  margin-bottom: 0;
-}
-
-#cog-popover {
-  .cog-popover-dropdown {
-    display: flex;
-    align-items: center;
-
-    .cog-popover-dropdown-title {
-      width: 50px;
-      margin-bottom: 5px;
-      margin-right: 10px;
-      font-weight: 600;
-    }
-
-    .dropdown {
-      margin-left: auto;
-
-      .dropdown-menu {
-        min-width: 80px;
-      }
-
-      #mode-dropdown,
-      #keybindings-dropdown,
-      #themes-dropdown {
-        width: 80px;
-        text-align: left;
-
-        .caret {
-          position: absolute;
-          right: 2px;
-          top: 7px;
-        }
-      }
+#outdated-preview-alert .pf-m-warning {
+  padding: 5px 10px;
+  .pf-v5-c-alert__title {
+    font-size: 12px;
+    button {
+      margin-left: 10px;
+      padding: 0;
+      font-size: 12px;
     }
   }
+}
+
+#preview_error_toast {
+  margin-bottom: 0;
 }
 
 .ace_tooltip.ace_doc-tooltip {

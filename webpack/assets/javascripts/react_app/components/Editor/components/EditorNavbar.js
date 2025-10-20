@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Nav, Spinner, Alert, Button } from 'patternfly-react';
+import { Nav, Alert, Button, Spinner } from '@patternfly/react-core';
 import { translate as __ } from '../../../common/I18n';
 import EditorRadioButton from './EditorRadioButton';
 import EditorOptions from './EditorOptions';
@@ -70,7 +70,12 @@ const EditorNavbar = ({
 
   return (
     <div className="navbar navbar-form navbar-full-width navbar-editor">
-      <Nav className="nav nav-tabs nav-tabs-pf nav-tabs-pf-secondary">
+      <Nav
+        ouiaId="editor-horizontal-navbar"
+        aria-label="Editor Tabs"
+        variant="horizontal"
+        className="nav nav-tabs nav-tabs-pf nav-tabs-pf5-secondary"
+      >
         <EditorRadioButton
           stateView={selectedView}
           btnView="input"
@@ -144,26 +149,33 @@ const EditorNavbar = ({
               previewResult !== '' &&
               renderedEditorValue !== value && (
                 <div id="outdated-preview-alert">
-                  <Alert type="warning">
-                    {__('Preview is outdated.')}
-                    <Button
-                      bsStyle="link"
-                      onClick={() =>
-                        previewTemplate({
-                          host: selectedHost,
-                          renderPath: selectedRenderPath,
-                          templateKindId,
-                        })
-                      }
-                    >
-                      {__('Preview')}
-                    </Button>
-                  </Alert>
+                  <Alert
+                    ouiaId="outdated-preview-alert"
+                    variant="warning"
+                    title={
+                      <>
+                        {__('Preview is outdated.')}
+                        <Button
+                          ouiaId="preview-button"
+                          variant="link"
+                          onClick={() =>
+                            previewTemplate({
+                              host: selectedHost,
+                              renderPath: selectedRenderPath,
+                              templateKindId,
+                            })
+                          }
+                        >
+                          {__('Preview')}
+                        </Button>
+                      </>
+                    }
+                  />
                 </div>
               )}
             {isLoading && (
               <div id="preview-spinner">
-                <Spinner size="sm" loading />
+                <Spinner size="sm" />
               </div>
             )}
           </React.Fragment>

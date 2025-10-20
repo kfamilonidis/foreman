@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavItem } from 'patternfly-react';
+import { NavItem } from '@patternfly/react-core';
 
 const EditorRadioButton = ({
   btnView,
@@ -11,8 +11,10 @@ const EditorRadioButton = ({
   title,
 }) => (
   <NavItem
+    role="presentation"
+    ouiaId={`${btnView}-navitem`}
     disabled={disabled}
-    active={stateView === btnView}
+    isActive={stateView === btnView}
     id={`${btnView}-navitem`}
     onClick={onClick}
   >
