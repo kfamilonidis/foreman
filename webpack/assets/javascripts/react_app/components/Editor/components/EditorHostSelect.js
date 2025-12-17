@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'patternfly-react-extensions';
+import { Tab, TabTitleText } from '@patternfly/react-core';
 import { translate as __ } from '../../../common/I18n';
 import './editorhostselect.scss';
 
@@ -33,7 +34,8 @@ class EditorHostSelect extends Component {
 
   render() {
     const {
-      show,
+      eventKey,
+      show = true,
       isLoading,
       onChange,
       onSearchChange,
@@ -44,31 +46,40 @@ class EditorHostSelect extends Component {
       searchQuery,
       selectedItem,
     } = this.props;
+
     return (
-      <div
-        ref={this.setWrapperRef}
+      <Tab
         id="editor-select-container"
-        className={show ? '' : 'hidden'}
-      >
-        <Select
-          options={options}
-          placeholder={__('Filter Host...')}
-          open={open}
-          onToggle={onToggle}
-          searchValue={searchQuery}
-          onSearchChange={onSearchChange}
-          onSearchClear={onSearchClear}
-          onKeyDown={this.onKey}
-          onItemClick={onChange}
-          selectedItem={selectedItem}
-          isLoading={isLoading}
-        />
-      </div>
+        key="editor-host-select"
+        ouiaId="editor-host-select"
+        eventKey={eventKey}
+        role="presentation"
+        isHidden={!show}
+        // ref={this.setWrapperRef} /* breaks the styling */
+        title={
+          <TabTitleText>
+            <Select
+              options={options}
+              placeholder={__('Filter Host...')}
+              open={open}
+              onToggle={onToggle}
+              searchValue={searchQuery}
+              onSearchChange={onSearchChange}
+              onSearchClear={onSearchClear}
+              onKeyDown={this.onKey}
+              onItemClick={onChange}
+              selectedItem={selectedItem}
+              isLoading={isLoading}
+            />
+          </TabTitleText>
+        }
+      />
     );
   }
 }
 
 EditorHostSelect.propTypes = {
+  eventKey: PropTypes.number.isRequired,
   show: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,

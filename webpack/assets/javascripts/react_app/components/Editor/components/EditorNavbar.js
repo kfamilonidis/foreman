@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Nav, Alert, Button, Spinner } from '@patternfly/react-core';
+import { Tabs, Tab, Nav, Alert, Button, Spinner } from '@patternfly/react-core';
 import { translate as __ } from '../../../common/I18n';
 import EditorRadioButton from './EditorRadioButton';
 import EditorOptions from './EditorOptions';
@@ -57,6 +57,11 @@ const EditorNavbar = ({
   fetchAndPreview,
 }) => {
   const [safemode, setSafemode] = useState(isSafemodeEnabled);
+  const [activeTab, setActiveTab] = useState(0);
+  const handleTabClick = (event, tabIndex) => {
+    event.preventDefault();
+    setActiveTab(tabIndex);
+  };
   const handleSafeModeChange = ({ currentTarget: { checked: newChecked } }) => {
     setSafemode(newChecked);
     const newRenderPath = newChecked ? safemodeRenderPath : renderPath;
@@ -69,14 +74,18 @@ const EditorNavbar = ({
   const selectedRenderPath = safemode ? safemodeRenderPath : renderPath;
 
   return (
-    <div className="navbar navbar-form navbar-full-width navbar-editor">
-      <Nav
+    // navbar-form navbar-full-width navbar-editor
+    <div className="navbar">
+      <Tabs
         ouiaId="editor-horizontal-navbar"
         aria-label="Editor Tabs"
         variant="horizontal"
-        className="nav nav-tabs nav-tabs-pf nav-tabs-pf5-secondary"
+        // className="nav-tabs-pf5-secondary"
+        activeKey={activeTab}
+        onSelect={handleTabClick}
       >
         <EditorRadioButton
+          eventKey={0}
           stateView={selectedView}
           btnView="input"
           title={__('Editor')}
@@ -88,6 +97,7 @@ const EditorNavbar = ({
           }}
         />
         <EditorRadioButton
+          eventKey={1}
           stateView={selectedView}
           disabled={!isDiff}
           btnView="diff"
@@ -101,6 +111,7 @@ const EditorNavbar = ({
         {showPreview && (
           <React.Fragment>
             <EditorRadioButton
+              eventKey={2}
               stateView={selectedView}
               btnView="preview"
               title={__('Preview')}
@@ -117,9 +128,9 @@ const EditorNavbar = ({
                 }
               }}
             />
-            {showHostSelector && (
+            {showHostSelector && selectedView === 'preview' && (
               <EditorHostSelect
-                show={selectedView === 'preview'}
+                eventKey={3}
                 open={isSelectOpen}
                 selectedItem={selectedHost}
                 placeholder={__('Select Host...')}
@@ -180,37 +191,37 @@ const EditorNavbar = ({
             )}
           </React.Fragment>
         )}
-      </Nav>
-      <EditorOptions
-        hosts={hosts}
-        value={value}
-        renderPath={renderPath}
-        showImport={showImport}
-        showHide={showHide}
-        showPreview={showPreview}
-        showHostSelector={showHostSelector}
-        isDiff={isDiff}
-        diffViewType={diffViewType}
-        isMasked={isMasked}
-        isRendering={isRendering}
-        importFile={importFile}
-        template={template}
-        revertChanges={revertChanges}
-        changeDiffViewType={changeDiffViewType}
-        toggleMaskValue={toggleMaskValue}
-        changeSetting={changeSetting}
-        changeTab={changeTab}
-        toggleModal={toggleModal}
-        selectedView={selectedView}
-        mode={mode}
-        modes={modes}
-        keyBinding={keyBinding}
-        keyBindings={keyBindings}
-        theme={theme}
-        themes={themes}
-        autocompletion={autocompletion}
-        liveAutocompletion={liveAutocompletion}
-      />
+        <EditorOptions
+          hosts={hosts}
+          value={value}
+          renderPath={renderPath}
+          showImport={showImport}
+          showHide={showHide}
+          showPreview={showPreview}
+          showHostSelector={showHostSelector}
+          isDiff={isDiff}
+          diffViewType={diffViewType}
+          isMasked={isMasked}
+          isRendering={isRendering}
+          importFile={importFile}
+          template={template}
+          revertChanges={revertChanges}
+          changeDiffViewType={changeDiffViewType}
+          toggleMaskValue={toggleMaskValue}
+          changeSetting={changeSetting}
+          changeTab={changeTab}
+          toggleModal={toggleModal}
+          selectedView={selectedView}
+          mode={mode}
+          modes={modes}
+          keyBinding={keyBinding}
+          keyBindings={keyBindings}
+          theme={theme}
+          themes={themes}
+          autocompletion={autocompletion}
+          liveAutocompletion={liveAutocompletion}
+        />
+      </Tabs>
     </div>
   );
 };

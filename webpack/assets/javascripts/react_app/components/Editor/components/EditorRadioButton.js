@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavItem } from '@patternfly/react-core';
+import { Tab, TabTitleIcon, TabTitleText } from '@patternfly/react-core';
 
 const EditorRadioButton = ({
+  eventKey,
   btnView,
   disabled,
   icon,
@@ -10,20 +11,29 @@ const EditorRadioButton = ({
   stateView,
   title,
 }) => (
-  <NavItem
+  <Tab
+    eventKey={eventKey}
+    key={`${btnView}-navitem`}
     role="presentation"
     ouiaId={`${btnView}-navitem`}
-    disabled={disabled}
-    isActive={stateView === btnView}
+    isDisabled={disabled}
+    // isActive={stateView === btnView}
     id={`${btnView}-navitem`}
     onClick={onClick}
+    title={
+      icon ? (
+        <TabTitleIcon>{icon}</TabTitleIcon>
+      ) : (
+        <TabTitleText>{title}</TabTitleText>
+      )
+    }
   >
-    {icon}
-    {icon ? ` ${title}` : title}
-  </NavItem>
+    {title}
+  </Tab>
 );
 
 EditorRadioButton.propTypes = {
+  eventKey: PropTypes.number,
   btnView: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   icon: PropTypes.node,

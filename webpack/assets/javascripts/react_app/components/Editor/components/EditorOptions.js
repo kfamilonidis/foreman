@@ -55,118 +55,126 @@ class EditorOptions extends React.Component {
     } = this.props;
 
     return (
-      <div id="editor-dropdowns">
-        {selectedView === 'diff' && (
-          <DiffToggle
-            stateView={diffViewType}
-            changeState={viewType => changeDiffViewType(viewType)}
-          />
-        )}
-
-        <h4 id="divider">|</h4>
-        {showHide && (
-          <Tooltip content={__('Hide Content')} position={TooltipPosition.top}>
-            <Button
-              ouiaId="hide-content-button"
-              isDisabled={selectedView !== 'input'}
-              className="editor-button"
-              id="hide-btn"
-              onClick={() => toggleMaskValue(isMasked)}
-              variant="link"
+      <>
+        <li id="pf-v5-c-tabs__item right">
+          {selectedView === 'diff' && (
+            <DiffToggle
+              stateView={diffViewType}
+              changeState={viewType => changeDiffViewType(viewType)}
+            />
+          )}
+        </li>
+        <li id="divider">|</li>
+        <li>
+          {showHide && (
+            <Tooltip
+              content={__('Hide Content')}
+              position={TooltipPosition.top}
             >
-              <Icon size="md">{isMasked ? <EyeIcon /> : <EyeSlashIcon />}</Icon>
-            </Button>
-          </Tooltip>
-        )}
-        {isDiff ? ( // fixing tooltip showing sometimes for disabled icon
-          <Tooltip
-            content={__('Revert Local Changes')}
-            position={TooltipPosition.top}
-          >
+              <Button
+                ouiaId="hide-content-button"
+                isDisabled={selectedView !== 'input'}
+                className="editor-button"
+                id="hide-btn"
+                onClick={() => toggleMaskValue(isMasked)}
+                variant="link"
+              >
+                <Icon size="md">
+                  {isMasked ? <EyeIcon /> : <EyeSlashIcon />}
+                </Icon>
+              </Button>
+            </Tooltip>
+          )}
+          {isDiff ? ( // fixing tooltip showing sometimes for disabled icon
+            <Tooltip
+              content={__('Revert Local Changes')}
+              position={TooltipPosition.top}
+            >
+              <Button
+                ouiaId="revert-local-changes-button"
+                className="editor-button"
+                id="undo-btn"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      'Are you sure you would like to revert all changes?'
+                    )
+                  ) {
+                    revertChanges(template);
+                    if (selectedView !== 'input') changeTab('input');
+                  }
+                }}
+                variant="link"
+              >
+                <Icon size="md">
+                  <UndoIcon />
+                </Icon>
+              </Button>
+            </Tooltip>
+          ) : (
             <Button
               ouiaId="revert-local-changes-button"
+              isDisabled
               className="editor-button"
               id="undo-btn"
-              onClick={() => {
-                if (
-                  window.confirm(
-                    'Are you sure you would like to revert all changes?'
-                  )
-                ) {
-                  revertChanges(template);
-                  if (selectedView !== 'input') changeTab('input');
-                }
-              }}
               variant="link"
             >
               <Icon size="md">
                 <UndoIcon />
               </Icon>
             </Button>
-          </Tooltip>
-        ) : (
-          <Button
-            ouiaId="revert-local-changes-button"
-            isDisabled
-            className="editor-button"
-            id="undo-btn"
-            variant="link"
-          >
-            <Icon size="md">
-              <UndoIcon />
-            </Icon>
-          </Button>
-        )}
-        {showImport && (
-          <Tooltip content={__('Import File')} position={TooltipPosition.top}>
+          )}
+          {showImport && (
+            <Tooltip content={__('Import File')} position={TooltipPosition.top}>
+              <Button
+                ouiaId="import-file-button"
+                isDisabled={selectedView !== 'input'}
+                className="import-button"
+                id="import-btn"
+                variant="link"
+                onClick={() => this.fileDialog()}
+              >
+                <Icon size="md">
+                  <UploadIcon />
+                </Icon>
+                <FormControl
+                  inputRef={ref => {
+                    this.fileInput = ref;
+                  }}
+                  className="hidden"
+                  type="file"
+                  onChange={importFile}
+                />
+              </Button>
+            </Tooltip>
+          )}
+          <EditorSettings
+            changeSetting={changeSetting}
+            selectedView={selectedView}
+            modes={modes}
+            mode={mode}
+            keyBindings={keyBindings}
+            keyBinding={keyBinding}
+            theme={theme}
+            themes={themes}
+            autocompletion={autocompletion}
+            liveAutocompletion={liveAutocompletion}
+          />
+          <Tooltip content={__('Maximize')} position={TooltipPosition.top}>
             <Button
-              ouiaId="import-file-button"
-              isDisabled={selectedView !== 'input'}
-              className="import-button"
-              id="import-btn"
+              ouiaId="maximize-editor-button"
+              className="editor-button"
+              id="fullscreen-btn"
+              onClick={toggleModal}
               variant="link"
-              onClick={() => this.fileDialog()}
             >
               <Icon size="md">
-                <UploadIcon />
+                <ArrowsAltIcon />
               </Icon>
-              <FormControl
-                inputRef={ref => {
-                  this.fileInput = ref;
-                }}
-                className="hidden"
-                type="file"
-                onChange={importFile}
-              />
             </Button>
           </Tooltip>
-        )}
-        <EditorSettings
-          changeSetting={changeSetting}
-          selectedView={selectedView}
-          modes={modes}
-          mode={mode}
-          keyBindings={keyBindings}
-          keyBinding={keyBinding}
-          theme={theme}
-          themes={themes}
-          autocompletion={autocompletion}
-          liveAutocompletion={liveAutocompletion}
-        />
-        <Tooltip content={__('Maximize')} position={TooltipPosition.top}>
-          <Button
-            ouiaId="maximize-editor-button"
-            className="editor-button"
-            id="fullscreen-btn"
-            onClick={toggleModal}
-            variant="link"
-          >
-            <Icon size="md">
-              <ArrowsAltIcon />
-            </Icon>
-          </Button>
-        </Tooltip>
-      </div>
+        </li>
+      </>
     );
   }
 }
